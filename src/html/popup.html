@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRONOTE Exporter</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 500px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+      }
+
+      .container {
+        padding: 24px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+        color: white;
+      }
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 24px;
+        color: #667eea;
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .subtitle {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-top: 2px;
+      }
+
+      .content {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        flex: 1;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .section {
+        margin-bottom: 24px;
+      }
+
+      .section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #667eea;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .stat-box {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 12px;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+      }
+
+      .stat-box h3 {
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #667eea;
+      }
+
+      button {
+        padding: 12px 16px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-secondary {
+        background: #f0f0f0;
+        color: #333;
+        border: 2px solid #e0e0e0;
+        margin-top: 8px;
+      }
+
+      .btn-secondary:hover {
+        background: #f5f5f5;
+        border-color: #667eea;
+        color: #667eea;
+      }
+
+      .status {
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        margin-top: 12px;
+        display: none;
+      }
+
+      .status.show {
+        display: block;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .status.warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 16px;
+      }
+
+      .loading.show {
+        display: block;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(102, 126, 234, 0.3);
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .note-item {
+        background: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        margin: 4px 0;
+        border-left: 3px solid #667eea;
+      }
+
+      .note-preview {
+        max-height: 200px;
+        overflow-y: auto;
+        margin: 12px 0;
+      }
+
+      .footer {
+        font-size: 11px;
+        color: #999;
+        text-align: center;
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px solid #eee;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        border-bottom: 2px solid #eee;
+      }
+
+      .tab-button {
+        padding: 8px 12px;
+        background: none;
+        border: none;
+        font-weight: 500;
+        color: #999;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        font-size: 13px;
+        width: auto;
+        justify-content: flex-start;
+      }
+
+      .tab-button.active {
+        color: #667eea;
+        border-bottom-color: #667eea;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+      .note-preview {
+        max-height: 350px; /* Plus d'espace pour le tableau */
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+      th {
+        padding: 8px 2px;
+      }
+      td {
+        vertical-align: middle;
+      }
+
+      /* Style pour les moyennes */
+      .avg-box {
+        display: flex;
+        justify-content: space-between;
+        background: #f8f9fa;
+        margin-bottom: 5px;
+        padding: 8px;
+        border-radius: 8px;
+      }
+
+      #developer-link {
+        display: flex;
+        align-items: center;
+        font-size: 26px;
+        gap: 8px;
+        color: #667eea;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        padding: 8px 12px;
+      }
+      #developer-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">P.</div>
+        <div>
+          <h1>PRONOTE Exporter</h1>
+          <div class="subtitle">Exportez vos notes</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- Stats -->
+        <div class="section">
+          <div class="section-title">📊 Récapitulatif</div>
+          <div class="stats">
+            <div class="stat-box">
+              <h3>Matières</h3>
+              <div class="stat-value" id="subjectsCount">0</div>
+            </div>
+            <div class="stat-box">
+              <h3>Notes</h3>
+              <div class="stat-value" id="notesCount">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div id="status" class="status"></div>
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p style="margin-top: 8px; font-size: 13px">Traitement en cours...</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-button active" data-tab="export">📥 Export</button>
+          <button class="tab-button" data-tab="grades">
+            👁️ Toutes les Notes
+          </button>
+          <button class="tab-button" data-tab="subjects">📚 Matières</button>
+          <button class="tab-button" data-tab="help">ℹ️ À Propos</button>
+        </div>
+
+        <!-- Export Tab -->
+        <div id="export" class="tab-content active">
+          <div class="section">
+            <div class="section-title">Formats disponibles</div>
+            <button class="btn-primary" id="exportStandardBtn">
+              📄 Exporter en JSON
+            </button>
+            <button class="btn-secondary" id="exportCsvBtn">
+              📊 Exporter en CSV
+            </button>
+            <button class="btn-secondary" id="exportMarkdownBtn">
+              📝 Exporter en Markdown
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview Tab -->
+        <div id="grades" class="tab-content">
+          <div class="section">
+            <div class="section-title">Liste chronologique</div>
+            <div id="notePreview" class="note-preview"></div>
+          </div>
+        </div>
+
+        <div id="subjects" class="tab-content">
+          <div class="section">
+            <div class="section-title">Moyennes et Matières</div>
+            <div id="subjectsPreview" class="note-preview"></div>
+          </div>
+        </div>
+
+        <!-- Help Tab -->
+        <div id="help" class="tab-content">
+          <div class="section">
+            <div class="section-title">ℹ️ À propos</div>
+            <p
+              style="
+                font-size: 12px;
+                line-height: 1.6;
+                color: #666;
+                margin-bottom: 12px;
+              "
+            >
+              Cette extension exporte automatiquement vos notes PRONOTE depuis
+              votre navigateur.
+            </p>
+            <ul
+              style="
+                font-size: 12px;
+                color: #666;
+                margin-left: 16px;
+                line-height: 1.8;
+              "
+            >
+              <li><strong>JSON :</strong> Format structuré universel</li>
+              <li><strong>CSV :</strong> Pour Excel et feuilles de calcul</li>
+              <li><strong>Markdown :</strong> Pour documentation et wikis</li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <div class="section-title">⚠️ Important</div>
+            <p style="font-size: 12px; color: #666; line-height: 1.6">
+              • Les données sont exportées depuis votre navigateur<br />
+              • Aucune donnée n'est envoyée à des serveurs<br />
+              • Ouvrez la console (F12) si pas de données trouvées
+            </p>
+          </div>
+          <div class="section">
+            <div class="section-title">👨‍💻 Développeur</div>
+            <h1 style="font-size: 12px; color: #666; line-height: 1.6">
+              <a id="developer-link" href="https://github.com/Pyronixus" target="_blank"><img style="width: 50px; border-radius: 50%" src="https://avatars.githubusercontent.com/u/264767398?v=4" alt="Github-profile" /> Pyro </a> <br /></h1> 
+              <p>• Futur développeur full stack passioné par la création d'outils pratiques et minmalistes</a><br /> • <a href="https://github.com/Pyronixus/Pronote-Exporter" target="_blank">code source de l'extension</a>
+              </p>
+        </div>
+        </div>
+        </div>
+        <div class="footer">PRONOTE Exporter v1.0.0 • Exportez vos données</div>
+      </div>
+    </div>
+
+    <script src="../scripts/popup.js"></script>
+  </body>
+</html>
