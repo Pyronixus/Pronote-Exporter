@@ -36,14 +36,15 @@ L'extension est articulée autour de 4 composants clés :
 Puisque l'extension n'est pas encore publiée sur le Chrome Web Store, voici comment l'installer manuellement sur un navigateur basé sur Chromium (Google Chrome, Brave, Microsoft Edge, Opera) :
 
 1. **Téléchargez ou clonez** l'intégralité des fichiers du projet dans un dossier local (ex: `Pronote-Exporter`).
-2. Ouvrez votre navigateur et accédez à la page de gestion des extensions :
+2. Supprimez les fichiers inutiles tels que README.md ⚠️ Garder le fichier LICENSE obligatoirement ⚠️
+3. Ouvrez votre navigateur et accédez à la page de gestion des extensions :
    - Sur Chrome : `chrome://extensions/`
    - Sur Brave : `brave://extensions/`
    - Sur Edge : `edge://extensions/`
-3. Activez le **Mode développeur** (interrupteur situé généralement en haut à droite).
-4. Cliquez sur le bouton **Charger l'extension non empaquetée** (Load unpacked) en haut à gauche.
-5. Sélectionnez le dossier racine contenant les fichiers de l'extension (le dossier où se trouve le fichier `manifest.json`).
-6. L'icône de **PRONOTE Exporter** apparaît désormais dans votre barre d'extensions ! Pinnez-la pour y accéder plus facilement.
+4. Activez le **Mode développeur** (interrupteur situé généralement en haut à droite).
+5. Cliquez sur le bouton **Charger l'extension non empaquetée** (Load unpacked) en haut à gauche.
+6. Sélectionnez le dossier racine contenant les fichiers de l'extension (le dossier où se trouve le fichier `manifest.json`).
+7. L'icône de **PRONOTE Exporter** apparaît désormais dans votre barre d'extensions ! Pinnez-la pour y accéder plus facilement.
 
 ---
 
@@ -61,7 +62,7 @@ Puisque l'extension n'est pas encore publiée sur le Chrome Web Store, voici com
 
 ## 👨‍💻 Développeur & Code Source
 
-- **Auteur :** [Pyro](https://github.com/Pyronixus) - *Futur développeur full-stack passionné par la création d'outils pratiques et minimalistes.*
+- **Auteur :** <img src="https://avatars.githubusercontent.com/u/264767398?v=4" alt="profile" width="40px"> [Pyro](https://github.com/Pyronixus) - *Futur développeur full-stack passionné par la création d'outils pratiques et minimalistes.*
 - **Dépôt Officiel :** [Pronote-Exporter](https://github.com/Pyronixus/Pronote-Exporter)
 
 ---
@@ -69,3 +70,7 @@ Puisque l'extension n'est pas encore publiée sur le Chrome Web Store, voici com
 ## ⚠️ Clause de non-responsabilité (Disclaimer)
 
 Cette extension est un projet indépendant. Elle n'est en aucun cas affiliée, associée, autorisée, approuvée ou officiellement liée à la société *Index Éducation* ou au logiciel *PRONOTE*. L'outil est proposé uniquement à des fins éducatives et de productivité personnelle.
+
+## 📜 License MIT
+
+Ce projet est sous license MIT, tout usage commercial, modification et distribution à titre public ou privé est autorisée, avec l'obligation d'inclure la <u>même</u> mention de droit d'auteur dans toutes les copies ou dans toute partie substantielle du logiciel.
